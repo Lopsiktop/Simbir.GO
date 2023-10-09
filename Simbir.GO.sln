@@ -7,17 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{51C1DA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7430838-8FBB-4F99-ADFC-A8FD106C3DE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simbir.GO.Domain", "Simbir.GO.Domain\Simbir.GO.Domain.csproj", "{9BEB3D1F-96CA-4434-893E-48A56C1518AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simbir.GO.Domain", "Simbir.GO.Domain\Simbir.GO.Domain.csproj", "{9BEB3D1F-96CA-4434-893E-48A56C1518AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simbir.GO.Application", "Simbir.GO.Application\Simbir.GO.Application.csproj", "{2060AF23-9C2F-487C-B898-F7FABB554298}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simbir.GO.Application", "Simbir.GO.Application\Simbir.GO.Application.csproj", "{2060AF23-9C2F-487C-B898-F7FABB554298}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simbir.GO.Contracts", "Simbir.GO.Contracts\Simbir.GO.Contracts.csproj", "{2846B759-C46B-4B59-86DA-6874D7632979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simbir.GO.Contracts", "Simbir.GO.Contracts\Simbir.GO.Contracts.csproj", "{2846B759-C46B-4B59-86DA-6874D7632979}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simbir.GO.Infrastructure", "Simbir.GO.Infrastructure\Simbir.GO.Infrastructure.csproj", "{A2A33D9B-4BB5-4644-AD1E-0F2E2B966120}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simbir.GO.Infrastructure", "Simbir.GO.Infrastructure\Simbir.GO.Infrastructure.csproj", "{A2A33D9B-4BB5-4644-AD1E-0F2E2B966120}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simbir.GO.WebAPI", "Simbir.GO.WebAPI\Simbir.GO.WebAPI.csproj", "{46FB6B47-B672-4403-B517-2BFCF9678996}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simbir.GO.WebAPI", "Simbir.GO.WebAPI\Simbir.GO.WebAPI.csproj", "{46FB6B47-B672-4403-B517-2BFCF9678996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simbir.GO.Domain.Tests", "Simbir.GO.Domain.Tests\Simbir.GO.Domain.Tests.csproj", "{D15AF54A-87C1-4028-A90E-7F8704734ABB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simbir.GO.Domain.Tests", "Simbir.GO.Domain.Tests\Simbir.GO.Domain.Tests.csproj", "{D15AF54A-87C1-4028-A90E-7F8704734ABB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

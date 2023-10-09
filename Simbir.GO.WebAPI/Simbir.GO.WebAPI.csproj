@@ -15,4 +15,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Simbir.GO.Application\Simbir.GO.Application.csproj" />
+    <ProjectReference Include="..\Simbir.GO.Contracts\Simbir.GO.Contracts.csproj" />
+    <ProjectReference Include="..\Simbir.GO.Infrastructure\Simbir.GO.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
