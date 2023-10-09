@@ -12,7 +12,9 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-        builder.Property(x => x.Username).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.Username).IsRequired();
+
+        builder.HasIndex(x => x.Username).IsUnique();
 
         builder.Property(x => x.Balance).IsRequired();
 

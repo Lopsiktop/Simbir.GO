@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
+using Simbir.GO.Application.Common.Interfaces.UnitOfWork;
 using Simbir.GO.Infrastructure.Authentication;
 using Simbir.GO.Infrastructure.Identity;
 using Simbir.GO.Infrastructure.Persistence;
@@ -32,6 +33,8 @@ public static class DependencyInjection
         {
             x.UseNpgsql(configuration.GetConnectionString("PostgreSql"));
         });
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
