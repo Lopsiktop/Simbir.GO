@@ -6,4 +6,6 @@ namespace Simbir.GO.Application.Common.Interfaces.Repositories;
 public interface IAccountRepository
 {
     Task<Error?> Add(Account account);
+
+    Task<Account?> GetAccountByUsername(string username);
 }

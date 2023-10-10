@@ -8,5 +8,8 @@ public static partial class Errors
     {
         public static Error UsernameMustBeUnique =>
             Error.Conflict("Account.UsernameMustBeUnique", "Пользователь с таким именем уже зарегистрирован!");
+
+        public static Error AccountDoesNotExist =>
+            Error.NotFound("Account.AccountDoesNotExist", "Такого пользователя несуществует! Неверно указан логин или пароль!");
     }
 }

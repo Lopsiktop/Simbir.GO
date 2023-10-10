@@ -26,4 +26,9 @@ internal class AccountRepository : IAccountRepository
 
         return null;
     }
+
+    public Task<Account?> GetAccountByUsername(string username)
+    {
+        return _context.Accounts.SingleOrDefaultAsync(x => x.Username == username);
+    }
 }

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.Accounts.Commands.Register;
+using Simbir.GO.Application.Accounts.Queries.SingIn;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Contracts.AccountContracts;
 using Simbir.GO.Domain.AccountEntity;
@@ -30,5 +31,16 @@ public class AccountController : ApiContoller
         return result.Match(
             account => Ok(_mapper.Map<AccountResponse>(account)),
             errors => Problem(errors));
-    } 
+    }
+
+    [HttpPost("SignIn")]
+    public async Task<IActionResult> SignIn(AccountRequest request)
+    {
+        var query = _mapper.Map<SignInAccountQuery>(request);
+        var result = await _mediator.Send(query);
+
+        return result.Match(
+            account => Ok(_mapper.Map<AccountTokenResponse>(account)),
+            errors => Problem(errors));
+    }
 }

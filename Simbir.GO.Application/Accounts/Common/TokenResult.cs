@@ -1,3 +1,3 @@
 ﻿namespace Simbir.GO.Application.Accounts.Common;
 
-public record TokenResult(string Token);
+public record TokenResult(int Id, string Username, string Token);
