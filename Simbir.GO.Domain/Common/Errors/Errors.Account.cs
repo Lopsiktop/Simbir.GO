@@ -11,5 +11,14 @@ public static partial class Errors
 
         public static Error AccountDoesNotExist =>
             Error.NotFound("Account.AccountDoesNotExist", "Такого пользователя несуществует! Неверно указан логин или пароль!");
+
+        public static Error UsernameCannotBeEmpty =>
+            Error.Validation("Account.UsernameCannotBeEmpty", "Поле 'username' не может быть пустым!");
+
+        public static Error PasswordCannotBeEmpty =>
+            Error.Validation("Account.PasswordCannotBeEmpty", "Поле 'password' не может быть пустым!");
+
+        public static Error BalanceCannotBeNegative =>
+            Error.Validation("Account.BalanceCannotBeNegative", "Поле 'balance' не может быть отрицательным!");
     }
 }

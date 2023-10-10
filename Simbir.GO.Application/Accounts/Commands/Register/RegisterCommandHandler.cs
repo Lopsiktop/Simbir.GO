@@ -18,7 +18,12 @@ internal class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr
 
     public async Task<ErrorOr<AccountResult>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var account = Account.Create(request.Username, request.Password);
+        var accountResult = Account.Create(request.Username, request.Password);
+
+        if (accountResult.IsError)
+            return accountResult.Errors;
+
+        var account = accountResult.Value;
 
         var result = await _unitOfWork.AccountRepository.Add(account);
 

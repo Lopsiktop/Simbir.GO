@@ -1,5 +1,6 @@
-﻿using Simbir.GO.Domain.Base;
-
+﻿using ErrorOr;
+using Simbir.GO.Domain.Base;
+using Simbir.GO.Domain.Common.Errors;
 using Crypt = BCrypt.Net.BCrypt;
 
 namespace Simbir.GO.Domain.AccountEntity;
@@ -28,14 +29,40 @@ public class Account : Entity
         return answer;
     }
 
-    public static Account Create(string username, string password)
+    public static List<Error> ValidateAccount(string username, string password = "default", double balance = default)
     {
+        List<Error> errors = new List<Error>();
+
+        if (string.IsNullOrEmpty(username))
+            errors.Add(Errors.Account.UsernameCannotBeEmpty);
+
+        if (string.IsNullOrEmpty(password))
+            errors.Add(Errors.Account.PasswordCannotBeEmpty);
+
+        if(balance < 0)
+            errors.Add(Errors.Account.BalanceCannotBeNegative);
+
+        return errors;
+    }
+
+    public static ErrorOr<Account> Create(string username, string password)
+    {
+        var errors = ValidateAccount(username, password);
+
+        if (errors.Count != 0)
+            return errors;
+
         string passwordHash = Crypt.EnhancedHashPassword(password, 13);
         return new Account(username, 0, false, passwordHash);
     }
 
-    public static Account CreateByAdmin(string username, string password, bool isAdmin, double balance)
+    public static ErrorOr<Account> CreateByAdmin(string username, string password, bool isAdmin, double balance)
     {
+        var errors = ValidateAccount(username, password, balance);
+
+        if (errors.Count != 0)
+            return errors;
+
         string passwordHash = Crypt.EnhancedHashPassword(password, 13);
         return new Account(username, balance, isAdmin, passwordHash);
     }
