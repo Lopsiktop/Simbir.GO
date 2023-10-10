@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MapsterMapper;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.Accounts.Commands.Register;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Contracts.AccountContracts;
 using Simbir.GO.Domain.AccountEntity;
@@ -6,32 +9,26 @@ using Simbir.GO.Infrastructure.Persistence;
 
 namespace Simbir.GO.WebAPI.Controllers;
 
-[ApiController]
 [Route("api/Account")]
-public class AccountController : ControllerBase
+public class AccountController : ApiContoller
 {
-    private readonly SimbirDbContext _context;
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public AccountController(SimbirDbContext context, IJwtTokenGenerator jwtTokenGenerator)
+    public AccountController(IMediator mediator, IMapper mapper)
     {
-        _context = context;
-        _jwtTokenGenerator = jwtTokenGenerator;
+        _mediator = mediator;
+        _mapper = mapper;
     }
 
-    [HttpPost("SignIn")]
-    public IActionResult SignIn(AccountRequest request)
+    [HttpPost("SignUp")]
+    public async Task<IActionResult> SignUp(AccountRequest request)
     {
-        var account = Account.Create(request.Username, request.Password);
-        _context.Accounts.Add(account);
-        _context.SaveChanges();
+        var command = _mapper.Map<RegisterCommand>(request);
+        var result = await _mediator.Send(command);
 
-        var token = _jwtTokenGenerator.GenerateToken(account.Id, account.IsAdmin);
-
-        return Ok(new
-        {
-            account,
-            token
-        });
+        return result.Match(
+            account => Ok(_mapper.Map<AccountResponse>(account)),
+            errors => Problem(errors));
     } 
 }

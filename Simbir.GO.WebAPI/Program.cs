@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Simbir.GO.Application;
 using Simbir.GO.Infrastructure;
+using Simbir.GO.WebAPI.Common.Errors;
+using Simbir.GO.WebAPI.Common.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddMappings();
+
+    builder.Services.AddSingleton<ProblemDetailsFactory, SimbirProblemDetailsFactory>();
 }
 
 var app = builder.Build();

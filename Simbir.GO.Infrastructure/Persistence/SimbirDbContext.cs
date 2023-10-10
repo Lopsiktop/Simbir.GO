@@ -3,7 +3,7 @@ using Simbir.GO.Domain.AccountEntity;
 
 namespace Simbir.GO.Infrastructure.Persistence;
 
-public class SimbirDbContext : DbContext
+internal class SimbirDbContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; } 
 
