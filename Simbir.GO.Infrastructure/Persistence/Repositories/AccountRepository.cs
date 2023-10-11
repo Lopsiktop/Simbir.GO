@@ -27,6 +27,11 @@ internal class AccountRepository : IAccountRepository
         return null;
     }
 
+    public async Task<Account?> FindById(int Id)
+    {
+        return await _context.Accounts.FindAsync(Id);
+    }
+
     public Task<Account?> GetAccountByUsername(string username)
     {
         return _context.Accounts.SingleOrDefaultAsync(x => x.Username == username);

@@ -1,7 +1,9 @@
 ﻿using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.Accounts.Commands.Register;
+using Simbir.GO.Application.Accounts.Queries.GetMe;
 using Simbir.GO.Application.Accounts.Queries.SingIn;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Contracts.AccountContracts;
@@ -20,6 +22,19 @@ public class AccountController : ApiContoller
     {
         _mediator = mediator;
         _mapper = mapper;
+    }
+
+    [HttpGet("Me")]
+    [Authorize]
+    public async Task<IActionResult> Me()
+    {
+        var sub = User.Claims.SingleOrDefault(x => x.Type.Contains("nameidentifier"))!.Value;
+        var query = new GetMeQuery(int.Parse(sub));
+        var result = await _mediator.Send(query);
+
+        return result.Match(
+            account => Ok(account),
+            errors => Problem(errors));
     }
 
     [HttpPost("SignUp")]

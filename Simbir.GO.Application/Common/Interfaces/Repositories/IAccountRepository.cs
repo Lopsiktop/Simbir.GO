@@ -8,4 +8,6 @@ public interface IAccountRepository
     Task<Error?> Add(Account account);
 
     Task<Account?> GetAccountByUsername(string username);
+
+    Task<Account?> FindById(int Id);
 }
