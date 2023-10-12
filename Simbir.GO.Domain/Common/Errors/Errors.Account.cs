@@ -20,5 +20,8 @@ public static partial class Errors
 
         public static Error BalanceCannotBeNegative =>
             Error.Validation("Account.BalanceCannotBeNegative", "Поле 'balance' не может быть отрицательным!");
+
+        public static Error TokenCannotBeEmpty =>
+            Error.Validation("Account.TokenCannotBeEmpty", "Поле 'token' не может быть пустым!");
     }
 }

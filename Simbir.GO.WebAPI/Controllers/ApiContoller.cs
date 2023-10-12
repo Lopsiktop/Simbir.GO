@@ -1,12 +1,33 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Simbir.GO.Application.Common.Interfaces.Authentication;
+using Simbir.GO.Application.Common.Interfaces.UnitOfWork;
 
 namespace Simbir.GO.WebAPI.Controllers;
 
 [ApiController]
 public class ApiContoller : ControllerBase
 {
+    //todo: check revokedToken
+    private readonly ICheckToken _checkToken;
+
+    public ApiContoller(ICheckToken checkToken)
+    {
+        _checkToken = checkToken;
+    }
+
+    protected async Task<bool> TokenIsRevoked()
+    {
+        var token = Request.Headers.Authorization.ToString().Split(' ').Last();
+        var result = await _checkToken.TokenIsRevoked(token);
+
+        if (result.IsError)
+            return true;
+
+        return result.Value;
+    }
+
     protected IActionResult Problem(Error error)
     {
         var statusCode = error.Type switch

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.Accounts.Commands.Register;
+using Simbir.GO.Application.Accounts.Commands.SignOut;
 using Simbir.GO.Application.Accounts.Commands.Update;
 using Simbir.GO.Application.Accounts.Queries.GetMe;
 using Simbir.GO.Application.Accounts.Queries.SingIn;
@@ -19,7 +20,10 @@ public class AccountController : ApiContoller
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public AccountController(IMediator mediator, IMapper mapper)
+    public AccountController(
+        IMediator mediator,
+        IMapper mapper,
+        ICheckToken checkToken) : base(checkToken)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -35,6 +39,8 @@ public class AccountController : ApiContoller
     [Authorize]
     public async Task<IActionResult> Me()
     {
+        if (await TokenIsRevoked()) return Unauthorized();
+
         int userId = GetUserId();
         var query = new GetMeQuery(userId);
         var result = await _mediator.Send(query);
@@ -66,10 +72,28 @@ public class AccountController : ApiContoller
             errors => Problem(errors));
     }
 
+    [HttpPost("SignOut")]
+    [Authorize]
+    public async Task<IActionResult> SignOutAccount()
+    {
+        if (await TokenIsRevoked()) return Unauthorized();
+
+        var token = Request.Headers.Authorization.ToString().Split(' ').Last();
+        var command = new SignOutAccountCommand(token);
+        var result = await _mediator.Send(command);
+
+        if(result.HasValue)
+            return Problem(result.Value);
+
+        return NoContent();
+    }
+
     [HttpPut("Update")]
     [Authorize]
     public async Task<IActionResult> Update(AccountRequest request)
     {
+        if (await TokenIsRevoked()) return Unauthorized();
+
         int userId = GetUserId();
         var command = new UpdateAccountCommand(userId, request.Username, request.Password);
         var result = await _mediator.Send(command);

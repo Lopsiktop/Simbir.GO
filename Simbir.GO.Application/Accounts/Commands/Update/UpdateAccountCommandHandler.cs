@@ -24,7 +24,7 @@ internal class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountComman
         if (account is null)
             return Errors.Account.AccountDoesNotExist;
 
-        var user_with_this_username_does_exist = _unitOfWork.AccountRepository.GetAccountByUsername(request.Username);
+        var user_with_this_username_does_exist = await _unitOfWork.AccountRepository.GetAccountByUsername(request.Username);
 
         if (user_with_this_username_does_exist is not null)
             return Errors.Account.UsernameMustBeUnique;

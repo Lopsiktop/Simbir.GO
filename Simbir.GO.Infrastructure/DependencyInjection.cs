@@ -70,6 +70,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
+        services.AddScoped<ICheckToken, CheckToken>();
+
         return services;
     }
 }

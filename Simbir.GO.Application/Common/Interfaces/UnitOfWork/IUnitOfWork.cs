@@ -6,5 +6,7 @@ public interface IUnitOfWork
 {
     IAccountRepository AccountRepository { get; }
 
+    IRevokedTokenRepository RevokedTokenRepository { get; }
+
     Task SaveChangesAsync();
 }

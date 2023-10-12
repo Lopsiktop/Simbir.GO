@@ -11,10 +11,14 @@ internal class UnitOfWork : IUnitOfWork
     public UnitOfWork(SimbirDbContext context)
     {
         _context = context;
+
         AccountRepository = new AccountRepository(context);
+        RevokedTokenRepository = new RevokedTokenRepository(context);
     }
 
     public IAccountRepository AccountRepository { get; }
+
+    public IRevokedTokenRepository RevokedTokenRepository { get; }
 
     public async Task SaveChangesAsync()
     {
