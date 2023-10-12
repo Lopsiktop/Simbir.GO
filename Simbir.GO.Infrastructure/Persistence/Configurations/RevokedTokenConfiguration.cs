@@ -15,5 +15,7 @@ public class RevokedTokenConfiguration : IEntityTypeConfiguration<RevokedToken>
         builder.Property(x => x.Token).IsRequired();
 
         builder.HasIndex(x => x.Token).IsUnique();
+
+        builder.Property(x => x.ExpirationTimeUtc).IsRequired();
     }
 }

@@ -16,7 +16,7 @@ internal class CheckToken : ICheckToken
 
     public async Task<ErrorOr<bool>> TokenIsRevoked(string token)
     {
-        var tokenRevokedResult = RevokedToken.Create(token);
+        var tokenRevokedResult = RevokedToken.Create(token, default);
 
         if (tokenRevokedResult.IsError)
             return tokenRevokedResult.FirstError;

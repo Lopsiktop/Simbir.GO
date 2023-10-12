@@ -72,6 +72,8 @@ public static class DependencyInjection
 
         services.AddScoped<ICheckToken, CheckToken>();
 
+        services.AddScoped<IRemoveExpiredTokens, RemoveExpiredTokens>();
+
         return services;
     }
 }

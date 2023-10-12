@@ -2,6 +2,7 @@
 using MediatR;
 using Simbir.GO.Application.Common.Interfaces.UnitOfWork;
 using Simbir.GO.Domain.AccountEntity;
+using Simbir.GO.Domain.Common.Errors;
 
 namespace Simbir.GO.Application.Accounts.Commands.SignOut;
 
@@ -16,7 +17,9 @@ internal class SignOutAccountCommandHandler : IRequestHandler<SignOutAccountComm
 
     public async Task<Error?> Handle(SignOutAccountCommand request, CancellationToken cancellationToken)
     {
-        var tokenResult = RevokedToken.Create(request.Token);
+        var date = DateTimeOffset.FromUnixTimeSeconds(long.Parse(request.ExpirationTimeUtc)).DateTime.ToUniversalTime();
+
+        var tokenResult = RevokedToken.Create(request.Token, date);
 
         if (tokenResult.IsError)
             return tokenResult.FirstError;

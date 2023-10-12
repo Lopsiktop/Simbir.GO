@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Simbir.GO.Application;
+using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Infrastructure;
 using Simbir.GO.WebAPI;
 using Simbir.GO.WebAPI.Common.Errors;
@@ -19,6 +20,14 @@ var builder = WebApplication.CreateBuilder(args);
 }
 
 var app = builder.Build();
+
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var remove = scope.ServiceProvider.GetRequiredService<IRemoveExpiredTokens>();
+        await remove.RemoveExpiredJwtTokens();
+    }
+}
 
 {
     if (app.Environment.IsDevelopment())

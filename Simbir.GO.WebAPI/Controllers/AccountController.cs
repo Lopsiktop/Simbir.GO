@@ -80,7 +80,8 @@ public class AccountController : ApiContoller
         if (await TokenIsRevoked()) return Unauthorized();
 
         var token = Request.Headers.Authorization.ToString().Split(' ').Last();
-        var command = new SignOutAccountCommand(token);
+        var time = User.Claims.SingleOrDefault(x => x.Type == "exp")!.Value;
+        var command = new SignOutAccountCommand(token, time);
         var result = await _mediator.Send(command);
 
         if(result.HasValue)

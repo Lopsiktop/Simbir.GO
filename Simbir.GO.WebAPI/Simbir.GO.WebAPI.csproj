@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Simbir.GO.Application\Simbir.GO.Application.csproj" />
     <ProjectReference Include="..\Simbir.GO.Contracts\Simbir.GO.Contracts.csproj" />
-    <ProjectReference Include="..\Simbir.GO.Domain\Simbir.GO.Domain.csproj" />
     <ProjectReference Include="..\Simbir.GO.Infrastructure\Simbir.GO.Infrastructure.csproj" />
   </ItemGroup>
 
