@@ -11,5 +11,8 @@ public static partial class Errors
 
         public static Error CountNumberCannotBeLessThanZero =>
             Error.Validation("General.StartNumberCannotBeNegative", "Поле 'count' не может быть меньше нуля!");
+
+        public static Error UserIdCannotBeNegative =>
+            Error.Validation("General.UserIdCannotBeNegative", "Поле 'userId' не может быть отрицательным!");
     }
 }

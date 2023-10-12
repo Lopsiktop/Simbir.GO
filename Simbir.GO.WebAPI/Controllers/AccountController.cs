@@ -47,7 +47,7 @@ public class AccountController : ApiContoller
         var result = await _mediator.Send(query);
 
         return result.Match(
-            account => Ok(_mapper.Map<AccountResponse>(account)),
+            account => Ok(account),
             errors => Problem(errors));
     }
 
@@ -58,7 +58,7 @@ public class AccountController : ApiContoller
         var result = await _mediator.Send(command);
 
         return result.Match(
-            account => Ok(_mapper.Map<AccountResponse>(account)),
+            account => Ok(account),
             errors => Problem(errors));
     }
 
@@ -69,7 +69,7 @@ public class AccountController : ApiContoller
         var result = await _mediator.Send(query);
 
         return result.Match(
-            account => Ok(_mapper.Map<AccountTokenResponse>(account)),
+            account => Ok(account),
             errors => Problem(errors));
     }
 
@@ -100,7 +100,7 @@ public class AccountController : ApiContoller
         var result = await _mediator.Send(command);
 
         return result.Match(
-            account => Ok(_mapper.Map<AccountResponse>(account)),
+            account => Ok(account),
             errors => Problem(errors));
     }
 }

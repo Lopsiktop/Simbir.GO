@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.AdminAccounts.Queries;
+using Simbir.GO.Application.AdminAccounts.Queries.GetAccount;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Infrastructure.Identity;
 
@@ -28,6 +29,19 @@ public class AdminAccountController : ApiContoller
 
         return result.Match(
             accounts => Ok(accounts),
+            errors => Problem(errors));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAccount(int id)
+    {
+        if (await TokenIsRevoked()) return Unauthorized();
+
+        var query = new GetAccountAdminQuery(id);
+        var result = await _mediator.Send(query);
+
+        return result.Match(
+            account => Ok(account),
             errors => Problem(errors));
     }
 }
