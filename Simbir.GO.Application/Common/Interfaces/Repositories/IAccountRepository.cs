@@ -10,4 +10,6 @@ public interface IAccountRepository
     Task<Account?> GetAccountByUsername(string username);
 
     Task<Account?> FindById(int Id);
+
+    Task<List<Account>> GetAllAccount(int start, int count);
 }

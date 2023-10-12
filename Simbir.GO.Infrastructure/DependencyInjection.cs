@@ -65,7 +65,7 @@ public static class DependencyInjection
         services.AddAuthorization(x =>
         {
             x.AddPolicy(IdentityPolicy.AdminPolicy,
-                x => x.RequireClaim(IdentityPolicy.AdminClaim, "True"));
+                x => x.RequireClaim(IdentityPolicy.AdminClaim, "True", "true"));
         });
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();

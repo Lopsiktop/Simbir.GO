@@ -36,4 +36,9 @@ internal class AccountRepository : IAccountRepository
     {
         return _context.Accounts.SingleOrDefaultAsync(x => x.Username == username);
     }
+
+    public async Task<List<Account>> GetAllAccount(int start, int count)
+    {
+        return await _context.Accounts.Skip(start).Take(count).ToListAsync();
+    }
 }

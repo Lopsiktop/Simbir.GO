@@ -15,6 +15,7 @@ using Simbir.GO.Infrastructure.Persistence;
 namespace Simbir.GO.WebAPI.Controllers;
 
 [Route("api/Account")]
+[AllowAnonymous]
 public class AccountController : ApiContoller
 {
     private readonly IMediator _mediator;

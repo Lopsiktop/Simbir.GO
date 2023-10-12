@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
@@ -7,18 +8,21 @@ using Simbir.GO.Application.Common.Interfaces.UnitOfWork;
 namespace Simbir.GO.WebAPI.Controllers;
 
 [ApiController]
+[Authorize]
 public class ApiContoller : ControllerBase
 {
-    //todo: check revokedToken
-    private readonly ICheckToken _checkToken;
+    private readonly ICheckToken? _checkToken;
 
-    public ApiContoller(ICheckToken checkToken)
+    public ApiContoller(ICheckToken? checkToken = null)
     {
         _checkToken = checkToken;
     }
 
     protected async Task<bool> TokenIsRevoked()
     {
+        if (_checkToken == null)
+            return false;
+
         var token = Request.Headers.Authorization.ToString().Split(' ').Last();
         var result = await _checkToken.TokenIsRevoked(token);
 
