@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using Simbir.GO.Domain.Base;
 using Simbir.GO.Domain.Common.Errors;
+using Simbir.GO.Domain.TransportEntity;
 using Crypt = BCrypt.Net.BCrypt;
 
 namespace Simbir.GO.Domain.AccountEntity;
@@ -15,6 +16,8 @@ public class Account : Entity
 
     public string PasswordHash { get; private set; }
 
+    public ICollection<Transport> Transports { get; private set; }
+
     private Account(string username, double balance, bool isAdmin, string passwordHash)
     {
         Username = username;
@@ -22,6 +25,10 @@ public class Account : Entity
         IsAdmin = isAdmin;
         PasswordHash = passwordHash;
     }
+
+    private Account() { }
+
+    public static Account Empty() => new Account();
 
     public bool VerifyPassword(string password)
     {
