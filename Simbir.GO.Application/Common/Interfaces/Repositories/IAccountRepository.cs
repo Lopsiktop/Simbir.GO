@@ -12,4 +12,6 @@ public interface IAccountRepository
     Task<Account?> FindById(int Id);
 
     Task<List<Account>> GetAllAccount(int start, int count);
+
+    Task<Error?> Remove(int UserId);
 }

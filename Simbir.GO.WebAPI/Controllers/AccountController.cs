@@ -24,23 +24,17 @@ public class AccountController : ApiContoller
     public AccountController(
         IMediator mediator,
         IMapper mapper,
-        ICheckToken checkToken) : base(checkToken)
+        ICheckAccounts checkAccounts) : base(checkAccounts)
     {
         _mediator = mediator;
         _mapper = mapper;
-    }
-
-    private int GetUserId()
-    {
-        var sub = User.Claims.SingleOrDefault(x => x.Type.Contains("nameidentifier"))!.Value;
-        return int.Parse(sub);
     }
 
     [HttpGet("Me")]
     [Authorize]
     public async Task<IActionResult> Me()
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         int userId = GetUserId();
         var query = new GetMeQuery(userId);
@@ -77,7 +71,7 @@ public class AccountController : ApiContoller
     [Authorize]
     public async Task<IActionResult> SignOutAccount()
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var token = Request.Headers.Authorization.ToString().Split(' ').Last();
         var time = User.Claims.SingleOrDefault(x => x.Type == "exp")!.Value;
@@ -94,7 +88,7 @@ public class AccountController : ApiContoller
     [Authorize]
     public async Task<IActionResult> Update(AccountRequest request)
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         int userId = GetUserId();
         var command = new UpdateAccountCommand(userId, request.Username, request.Password);

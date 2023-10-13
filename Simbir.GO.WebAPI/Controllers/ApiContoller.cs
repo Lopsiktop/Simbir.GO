@@ -11,20 +11,48 @@ namespace Simbir.GO.WebAPI.Controllers;
 [Authorize]
 public class ApiContoller : ControllerBase
 {
-    private readonly ICheckToken? _checkToken;
+    private readonly ICheckAccounts? _checkAccounts;
 
-    public ApiContoller(ICheckToken? checkToken = null)
+    public ApiContoller(ICheckAccounts? checkAccounts = null)
     {
-        _checkToken = checkToken;
+        _checkAccounts = checkAccounts;
     }
+
+    protected int GetUserId()
+    {
+        var sub = User.Claims.SingleOrDefault(x => x.Type.Contains("nameidentifier"))!.Value;
+        return int.Parse(sub);
+    }
+
+    protected async Task<bool> TokenIsRevokedOrAccountDoesNotExist()
+    {
+        if(await TokenIsRevoked()) return true;
+        if(!await AccountDoesExist()) return true;
+
+        return false;
+    }
+
+    protected async Task<bool> AccountDoesExist()
+    {
+        if (_checkAccounts == null)
+            return false;
+
+        var id = GetUserId();
+
+        var result = await _checkAccounts.AccountDoesExist(id);
+        return result;
+    }
+
+    private string GetJwtToken() =>
+        Request.Headers.Authorization.ToString().Split(' ').Last();
 
     protected async Task<bool> TokenIsRevoked()
     {
-        if (_checkToken == null)
+        if (_checkAccounts == null)
             return false;
 
-        var token = Request.Headers.Authorization.ToString().Split(' ').Last();
-        var result = await _checkToken.TokenIsRevoked(token);
+        var token = GetJwtToken();
+        var result = await _checkAccounts.TokenIsRevoked(token);
 
         if (result.IsError)
             return true;

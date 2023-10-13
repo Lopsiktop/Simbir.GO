@@ -70,7 +70,7 @@ public static class DependencyInjection
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        services.AddScoped<ICheckToken, CheckToken>();
+        services.AddScoped<ICheckAccounts, CheckAccounts>();
 
         services.AddScoped<IRemoveExpiredTokens, RemoveExpiredTokens>();
 

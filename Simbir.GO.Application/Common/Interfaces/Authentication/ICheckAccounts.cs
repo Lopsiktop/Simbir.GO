@@ -2,7 +2,9 @@
 
 namespace Simbir.GO.Application.Common.Interfaces.Authentication;
 
-public interface ICheckToken
+public interface ICheckAccounts
 {
     Task<ErrorOr<bool>> TokenIsRevoked(string token);
+
+    Task<bool> AccountDoesExist(int userId);
 }

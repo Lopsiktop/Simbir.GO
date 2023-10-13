@@ -41,4 +41,16 @@ internal class AccountRepository : IAccountRepository
     {
         return await _context.Accounts.Skip(start).Take(count).ToListAsync();
     }
+
+    public async Task<Error?> Remove(int UserId)
+    {
+        var account = await FindById(UserId);
+
+        if (account is null)
+            return Errors.Account.AccountDoesNotExist;
+
+        _context.Accounts.Remove(account);
+
+        return null;
+    }
 }

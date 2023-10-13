@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.AdminAccounts.Commands.CreateAccount;
+using Simbir.GO.Application.AdminAccounts.Commands.DeleteAccount;
 using Simbir.GO.Application.AdminAccounts.Commands.UpdateAccount;
 using Simbir.GO.Application.AdminAccounts.Common;
 using Simbir.GO.Application.AdminAccounts.Queries;
@@ -20,7 +21,7 @@ public class AdminAccountController : ApiContoller
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public AdminAccountController(ICheckToken checkToken, IMediator mediator, IMapper mapper) : base(checkToken)
+    public AdminAccountController(ICheckAccounts checkAccounts, IMediator mediator, IMapper mapper) : base(checkAccounts)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -29,7 +30,7 @@ public class AdminAccountController : ApiContoller
     [HttpGet]
     public async Task<IActionResult> GetAccounts(int start, int count)
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var query = new GetAllAccountsAdminQuery(start, count);
         var result = await _mediator.Send(query);
@@ -42,7 +43,7 @@ public class AdminAccountController : ApiContoller
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAccount(int id)
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var query = new GetAccountAdminQuery(id);
         var result = await _mediator.Send(query);
@@ -55,7 +56,7 @@ public class AdminAccountController : ApiContoller
     [HttpPost]
     public async Task<IActionResult> CreateAccount(AdminAccountRequest request)
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var command = _mapper.Map<CreateAccountAdminCommand>(request);
         var result = await _mediator.Send(command);
@@ -68,7 +69,7 @@ public class AdminAccountController : ApiContoller
     [HttpPut("{id}")]
     public async Task<IActionResult> CreateAccount(int id, AdminAccountRequest request)
     {
-        if (await TokenIsRevoked()) return Unauthorized();
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var command = new UpdateAccountAdminCommand(id, request.Username, request.Password, request.IsAdmin, request.Balance); ;
         var result = await _mediator.Send(command);
@@ -76,5 +77,19 @@ public class AdminAccountController : ApiContoller
         return result.Match(
             account => Ok(account),
             errors => Problem(errors));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAccount(int id)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = new DeleteAccountAdminCommand(id);
+        var result = await _mediator.Send(command);
+
+        if (result.HasValue)
+            return Problem(result.Value);
+
+        return NoContent();
     }
 }

@@ -5,11 +5,11 @@ using Simbir.GO.Domain.AccountEntity;
 
 namespace Simbir.GO.Infrastructure.Authentication;
 
-internal class CheckToken : ICheckToken
+internal class CheckAccounts : ICheckAccounts
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CheckToken(IUnitOfWork unitOfWork)
+    public CheckAccounts(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -24,5 +24,14 @@ internal class CheckToken : ICheckToken
         var tokenRevoked = tokenRevokedResult.Value;
 
         return await _unitOfWork.RevokedTokenRepository.TokenDoesExist(tokenRevoked);
+    }
+
+    public async Task<bool> AccountDoesExist(int userId)
+    {
+        var account = await _unitOfWork.AccountRepository.FindById(userId);
+        if (account is null)
+            return false;
+
+        return true;
     }
 }
