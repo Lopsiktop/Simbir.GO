@@ -48,6 +48,18 @@ public class Transport : Entity
 
     private Transport() { }
 
+    public static ErrorOr<TransportType> ToTransportType(string type)
+    {
+        ErrorOr<TransportType> transportType = type switch {
+            "Car" => TransportType.Car,
+            "Bake" => TransportType.Bake,
+            "Scooter" => TransportType.Scooter,
+            _ => Errors.Transport.TransportTypeDoesNotExist 
+        };
+
+        return transportType;
+    }
+
     public static List<Error> Validate(Account owner, string model, string color, string identifier)
     {
         var errors = new List<Error>();
@@ -83,12 +95,17 @@ public class Transport : Entity
         return validation;
     }
 
-    public static ErrorOr<Transport> Create(Account owner, bool canBeRented, TransportType transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
+    public static ErrorOr<Transport> Create(Account owner, bool canBeRented, string transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
     {
         var validation = Validate(owner, model, color, identifier);
         if (validation.Count != 0)
             return validation;
 
-        return new Transport(owner, canBeRented, transportType, model, color, identifier, description, latitude, longitude, minutePrice, dayPrice);
+        var type = ToTransportType(transportType);
+
+        if (type.IsError)
+            return type.Errors;
+
+        return new Transport(owner, canBeRented, type.Value, model, color, identifier, description, latitude, longitude, minutePrice, dayPrice);
     }
 }

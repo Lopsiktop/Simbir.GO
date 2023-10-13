@@ -3,6 +3,6 @@
 public enum TransportType
 {
     Car,
-    Boke,
+    Bake,
     Scooter
 }
