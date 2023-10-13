@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.AdminAccounts.Commands.CreateAccount;
+using Simbir.GO.Application.AdminAccounts.Commands.UpdateAccount;
 using Simbir.GO.Application.AdminAccounts.Common;
 using Simbir.GO.Application.AdminAccounts.Queries;
 using Simbir.GO.Application.AdminAccounts.Queries.GetAccount;
@@ -57,6 +58,19 @@ public class AdminAccountController : ApiContoller
         if (await TokenIsRevoked()) return Unauthorized();
 
         var command = _mapper.Map<CreateAccountAdminCommand>(request);
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            account => Ok(account),
+            errors => Problem(errors));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> CreateAccount(int id, AdminAccountRequest request)
+    {
+        if (await TokenIsRevoked()) return Unauthorized();
+
+        var command = new UpdateAccountAdminCommand(id, request.Username, request.Password, request.IsAdmin, request.Balance); ;
         var result = await _mediator.Send(command);
 
         return result.Match(

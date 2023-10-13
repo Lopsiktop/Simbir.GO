@@ -17,6 +17,10 @@ internal class RemoveExpiredTokens : IRemoveExpiredTokens
     public async Task RemoveExpiredJwtTokens()
     {
         var tokens = await _context.RevokedTokens.Where(x => x.ExpirationTimeUtc <= DateTime.UtcNow).ToArrayAsync();
+
+        if (tokens.Length == 0)
+            return;
+
         _context.RevokedTokens.RemoveRange(tokens);
         await _context.SaveChangesAsync();
     }

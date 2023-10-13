@@ -44,6 +44,23 @@ public class Account : Entity
         return errors;
     }
 
+    public List<Error> Update(string username, string password, bool isAdmin, double balance)
+    {
+        var errors = ValidateAccount(username, password, balance);
+
+        if (errors.Count != 0)
+            return errors;
+
+        string passwordHash = Crypt.EnhancedHashPassword(password, 13);
+
+        Username = username;
+        PasswordHash = passwordHash;
+        IsAdmin = isAdmin;
+        Balance = balance;
+
+        return errors;
+    }
+
     public static List<Error> ValidateAccount(string username, string password = "default", double balance = default)
     {
         List<Error> errors = new List<Error>();
