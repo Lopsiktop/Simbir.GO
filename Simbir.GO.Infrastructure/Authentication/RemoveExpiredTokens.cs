@@ -18,5 +18,6 @@ internal class RemoveExpiredTokens : IRemoveExpiredTokens
     {
         var tokens = await _context.RevokedTokens.Where(x => x.ExpirationTimeUtc <= DateTime.UtcNow).ToArrayAsync();
         _context.RevokedTokens.RemoveRange(tokens);
+        await _context.SaveChangesAsync();
     }
 }
