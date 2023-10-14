@@ -1,4 +1,5 @@
-﻿using Simbir.GO.Application.Common.Interfaces.Repositories;
+﻿using ErrorOr;
+using Simbir.GO.Application.Common.Interfaces.Repositories;
 using Simbir.GO.Domain.TransportEntity;
 
 namespace Simbir.GO.Infrastructure.Persistence.Repositories;
@@ -20,5 +21,10 @@ internal class TransportRepository : ITransportRepository
     public async Task<Transport?> FindById(int transportId)
     {
         return await _context.Transports.FindAsync(transportId);
+    }
+
+    public void Remove(Transport transport)
+    {
+        _context.Transports.Remove(transport);
     }
 }

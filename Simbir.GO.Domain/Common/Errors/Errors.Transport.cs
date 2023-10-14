@@ -7,21 +7,24 @@ public static partial class Errors
     public static class Transport
     {
         public static Error OwnerCannotBeNull =>
-            Error.Conflict("Transport.OwnerCannotBeNull", "Owner не может быть null!");
+            Error.Validation("Transport.OwnerCannotBeNull", "Owner не может быть null!");
 
         public static Error ModelCannotBeEmpty =>
-            Error.Conflict("Transport.ModelCannotBeEmpty", "Поле 'model' не может быть пустым!");
+            Error.Validation("Transport.ModelCannotBeEmpty", "Поле 'model' не может быть пустым!");
 
         public static Error ColorCannotBeEmpty =>
-            Error.Conflict("Transport.ColorCannotBeEmpty", "Поле 'color' не может быть пустым!");
+            Error.Validation("Transport.ColorCannotBeEmpty", "Поле 'color' не может быть пустым!");
 
         public static Error IdentifierCannotBeEmpty =>
-            Error.Conflict("Transport.IdentifierCannotBeEmpty", "Поле 'identifier' не может быть пустым!");
+            Error.Validation("Transport.IdentifierCannotBeEmpty", "Поле 'identifier' не может быть пустым!");
 
         public static Error TransportDoesNotExist =>
-            Error.Conflict("Transport.TransportDoesNotExist", "Транспорт с таким id несуществует!");
+            Error.Validation("Transport.TransportDoesNotExist", "Транспорт с таким id несуществует!");
 
         public static Error TransportTypeDoesNotExist =>
-            Error.Conflict("Transport.TransportDoesNotExist", "Такой тип транспорта несуществует!");
+            Error.Validation("Transport.TransportTypeDoesNotExist", "Такой тип транспорта несуществует!");
+
+        public static Error OnlyOwnerCanChangeHisTransport =>
+            Error.Conflict("Transport.OnlyOwnerCanChangeHisTransport", "Только владелец транспорта может его изменять!");
     }
 }
