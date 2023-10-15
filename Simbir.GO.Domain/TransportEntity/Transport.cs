@@ -52,7 +52,7 @@ public class Transport : Entity
     {
         ErrorOr<TransportType> transportType = type switch {
             "Car" => TransportType.Car,
-            "Bake" => TransportType.Bake,
+            "Bike" => TransportType.Bike,
             "Scooter" => TransportType.Scooter,
             _ => Errors.Transport.TransportTypeDoesNotExist 
         };

@@ -11,4 +11,6 @@ public interface ITransportRepository
     Task Add(Transport transport);
 
     void Remove(Transport transport);
+
+    Task<List<Transport>> GetAllTransports(int start, int count, TransportType type);
 }

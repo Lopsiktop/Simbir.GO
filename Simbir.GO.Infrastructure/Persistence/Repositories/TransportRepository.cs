@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using Simbir.GO.Application.Common.Interfaces.Repositories;
 using Simbir.GO.Domain.TransportEntity;
 
@@ -21,6 +22,12 @@ internal class TransportRepository : ITransportRepository
     public async Task<Transport?> FindById(int transportId)
     {
         return await _context.Transports.FindAsync(transportId);
+    }
+
+    public Task<List<Transport>> GetAllTransports(int start, int count, TransportType type)
+    {
+        var transports = _context.Transports.Skip(start).Take(count).Where(x => x.TransportType == type).ToListAsync();
+        return transports;
     }
 
     public void Remove(Transport transport)
