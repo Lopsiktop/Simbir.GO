@@ -77,6 +77,23 @@ public class Transport : Entity
         return errors;
     }
 
+    public List<Error> Update(Account owner, bool canBeRented, string transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
+    {
+        var result = Update(canBeRented, model, color, identifier, description, latitude, longitude, minutePrice, dayPrice);
+        if (result.Count != 0)
+            return result;
+
+        var typeResult = ToTransportType(transportType);
+        if (typeResult.IsError)
+            return typeResult.Errors;
+
+        Owner = owner;
+        OwnerId = owner.Id;
+        TransportType = typeResult.Value;
+
+        return result;
+    }
+
     public List<Error> Update(bool canBeRented, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
     {
         var validation = Validate(Account.Empty(), model, color, identifier);

@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Simbir.GO.Application.AdminTransports.Commands.UpdateTransport;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
 using Simbir.GO.Application.Transports.Commands.UpdateTransport;
 using Simbir.GO.Contracts.TransportContracts;
@@ -17,5 +18,9 @@ public class TransportMappingConfig : IRegister
             .Map(dest => dest, src => src.Request)
             .Map(dest => dest.TransportId, src => src.TransportId)
             .Map(dest => dest.UserId, src => src.UserId);
+
+        config.NewConfig<(int TransportId, UpdateTransportAdminRequest Request), UpdateTransportAdminCommand>()
+            .Map(dest => dest, src => src.Request)
+            .Map(dest => dest.TransportId, src => src.TransportId);
     }
 }

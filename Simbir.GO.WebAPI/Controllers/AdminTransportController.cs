@@ -2,8 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.AdminTransports.Commands.UpdateTransport;
 using Simbir.GO.Application.AdminTransports.Queries.GetAllTransport;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
+using Simbir.GO.Application.Transports.Commands.UpdateTransport;
 using Simbir.GO.Application.Transports.Queries.GetTransport;
 using Simbir.GO.Contracts.TransportContracts;
 using Simbir.GO.Infrastructure.Identity;
@@ -55,6 +57,19 @@ public class AdminTransportController : ApiContoller
         if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var command = _mapper.Map<CreateTransportCommand>(request);
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            transport => Ok(transport),
+            errors => Problem(errors));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateTransport(int id, UpdateTransportAdminRequest request)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = _mapper.Map<UpdateTransportAdminCommand>((id, request));
         var result = await _mediator.Send(command);
 
         return result.Match(
