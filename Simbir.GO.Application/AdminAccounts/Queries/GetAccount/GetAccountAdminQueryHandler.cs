@@ -18,7 +18,7 @@ internal class GetAccountAdminQueryHandler : IRequestHandler<GetAccountAdminQuer
     public async Task<ErrorOr<AccountAdminResult>> Handle(GetAccountAdminQuery request, CancellationToken cancellationToken)
     {
         if (request.UserId < 0)
-            return Errors.General.UserIdCannotBeNegative;
+            return Errors.General.IdCannotBeNegative;
 
         var account = await _unitOfWork.AccountRepository.FindById(request.UserId);
 

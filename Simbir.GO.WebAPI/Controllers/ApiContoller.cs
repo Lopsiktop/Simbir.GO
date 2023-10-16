@@ -35,7 +35,7 @@ public class ApiContoller : ControllerBase
     protected async Task<bool> AccountDoesExist()
     {
         if (_checkAccounts == null)
-            return false;
+            return true;
 
         var id = GetUserId();
 

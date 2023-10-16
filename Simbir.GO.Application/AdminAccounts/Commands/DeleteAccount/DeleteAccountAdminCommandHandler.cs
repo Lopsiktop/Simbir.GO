@@ -17,7 +17,7 @@ internal class DeleteAccountAdminCommandHandler : IRequestHandler<DeleteAccountA
     public async Task<Error?> Handle(DeleteAccountAdminCommand request, CancellationToken cancellationToken)
     {
         if (request.UserId < 0)
-            return Errors.General.UserIdCannotBeNegative;
+            return Errors.General.IdCannotBeNegative;
 
         var result = await _unitOfWork.AccountRepository.Remove(request.UserId);
 

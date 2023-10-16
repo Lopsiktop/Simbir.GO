@@ -12,7 +12,7 @@ using Simbir.GO.Infrastructure.Persistence;
 namespace Simbir.GO.Infrastructure.Migrations
 {
     [DbContext(typeof(SimbirDbContext))]
-    [Migration("20231012173539_Initial")]
+    [Migration("20231013171627_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -76,6 +76,76 @@ namespace Simbir.GO.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("RevokedTokens");
+                });
+
+            modelBuilder.Entity("Simbir.GO.Domain.TransportEntity.Transport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("CanBeRented")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<double?>("DayPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("MinutePrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransportType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Transports");
+                });
+
+            modelBuilder.Entity("Simbir.GO.Domain.TransportEntity.Transport", b =>
+                {
+                    b.HasOne("Simbir.GO.Domain.AccountEntity.Account", "Owner")
+                        .WithMany("Transports")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Simbir.GO.Domain.AccountEntity.Account", b =>
+                {
+                    b.Navigation("Transports");
                 });
 #pragma warning restore 612, 618
         }

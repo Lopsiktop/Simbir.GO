@@ -8,5 +8,7 @@ public interface IUnitOfWork
 
     IRevokedTokenRepository RevokedTokenRepository { get; }
 
+    ITransportRepository TransportRepository { get; }
+
     Task SaveChangesAsync();
 }
