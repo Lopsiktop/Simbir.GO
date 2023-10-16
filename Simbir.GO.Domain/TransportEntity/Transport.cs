@@ -50,10 +50,11 @@ public class Transport : Entity
 
     public static ErrorOr<TransportType> ToTransportType(string type)
     {
+        type = type.ToLower();
         ErrorOr<TransportType> transportType = type switch {
-            "Car" => TransportType.Car,
-            "Bike" => TransportType.Bike,
-            "Scooter" => TransportType.Scooter,
+            "car" => TransportType.Car,
+            "bike" => TransportType.Bike,
+            "scooter" => TransportType.Scooter,
             _ => Errors.Transport.TransportTypeDoesNotExist 
         };
 

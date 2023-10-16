@@ -26,10 +26,10 @@ internal class GetAllTransportQueryHandler : IRequestHandler<GetAllTransportQuer
 
         var transportTypeResult = Transport.ToTransportType(request.TransportType);
 
-        if (transportTypeResult.IsError)
+        if (transportTypeResult.IsError && request.TransportType.ToLower() != "all")
             return transportTypeResult.Errors;
 
-        var transportType = transportTypeResult.Value;
+        TransportType? transportType = transportTypeResult.IsError && request.TransportType.ToLower() == "all" ? null : transportTypeResult.Value;
 
         var transports = await _unitOfWork.TransportRepository.GetAllTransports(request.Start, request.Count, transportType);
 

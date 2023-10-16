@@ -24,10 +24,12 @@ internal class TransportRepository : ITransportRepository
         return await _context.Transports.FindAsync(transportId);
     }
 
-    public Task<List<Transport>> GetAllTransports(int start, int count, TransportType type)
+    public Task<List<Transport>> GetAllTransports(int start, int count, TransportType? type = null)
     {
-        var transports = _context.Transports.Skip(start).Take(count).Where(x => x.TransportType == type).ToListAsync();
-        return transports;
+        if (type is null)
+            return _context.Transports.Skip(start).Take(count).ToListAsync();
+
+        return _context.Transports.Skip(start).Take(count).Where(x => x.TransportType == type).ToListAsync();
     }
 
     public void Remove(Transport transport)

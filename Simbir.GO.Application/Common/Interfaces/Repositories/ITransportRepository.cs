@@ -12,5 +12,5 @@ public interface ITransportRepository
 
     void Remove(Transport transport);
 
-    Task<List<Transport>> GetAllTransports(int start, int count, TransportType type);
+    Task<List<Transport>> GetAllTransports(int start, int count, TransportType? type = null);
 }
