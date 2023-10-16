@@ -17,6 +17,9 @@ internal class GetTransportQueryHandler : IRequestHandler<GetTransportQuery, Err
 
     public async Task<ErrorOr<TransportResult>> Handle(GetTransportQuery request, CancellationToken cancellationToken)
     {
+        if (request.Id < 0)
+            return Errors.General.IdCannotBeNegative;
+
         var transport = await _unitOfWork.TransportRepository.FindById(request.Id);
 
         if (transport is null)
