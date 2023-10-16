@@ -2,9 +2,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.AdminTransports.Commands.DeleteTransport;
 using Simbir.GO.Application.AdminTransports.Commands.UpdateTransport;
 using Simbir.GO.Application.AdminTransports.Queries.GetAllTransport;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
+using Simbir.GO.Application.Transports.Commands.DeleteTransport;
 using Simbir.GO.Application.Transports.Commands.UpdateTransport;
 using Simbir.GO.Application.Transports.Queries.GetTransport;
 using Simbir.GO.Contracts.TransportContracts;
@@ -75,5 +77,19 @@ public class AdminTransportController : ApiContoller
         return result.Match(
             transport => Ok(transport),
             errors => Problem(errors));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteTransport(int id)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = new DeleteTransportAdminCommand(id);
+        var result = await _mediator.Send(command);
+
+        if (result.HasValue)
+            return Problem(result.Value);
+
+        return NoContent();
     }
 }

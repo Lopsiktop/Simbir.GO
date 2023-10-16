@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.AdminTransports.Commands.DeleteTransport;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
 using Simbir.GO.Application.Transports.Commands.DeleteTransport;
