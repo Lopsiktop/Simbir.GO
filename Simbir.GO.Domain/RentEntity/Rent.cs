@@ -20,11 +20,11 @@ public class Rent : Entity
 
     public DateTime? TimeEnd { get; private set; }
 
-    public double? PriceOfUnit { get; private set; }
+    public double PriceOfUnit { get; private set; }
 
     public double? FinalPrice { get; private set; }
 
-    private Rent(Account renter, Transport transport, RentType rentType, DateTime timeStart, DateTime? timeEnd, double? priceOfUnit, double? finalPrice)
+    private Rent(Account renter, Transport transport, RentType rentType, DateTime timeStart, DateTime? timeEnd, double priceOfUnit, double? finalPrice)
     {
         Renter = renter;
         RenterId = renter.Id;
@@ -65,7 +65,11 @@ public class Rent : Entity
         if(priceOfUnit.HasValue && priceOfUnit.Value < 0)
             errors.Add(Errors.Rent.PriceOfUnitCannotBeLessThenZero);
         if (finalPrice.HasValue && finalPrice.Value < 0)
-            errors.Add(Errors.Rent.FinalPriceCannotBeLessThenZero); ;
+            errors.Add(Errors.Rent.FinalPriceCannotBeLessThenZero);
+        if (!transport!.CanBeRented)
+            errors.Add(Errors.Transport.ThisTransportCannotBeRented);
+        if (transport.OwnerId == renter!.Id)
+            errors.Add(Errors.Rent.OwnerCannotRentHisOwnTransport);
 
         return errors;
     }
@@ -82,6 +86,16 @@ public class Rent : Entity
 
         var type = rentTypeResult.Value;
 
-        return new Rent(renter, transport, type, timeStart, timeEnd, priceOfUnit, finalPrice);
+        if(priceOfUnit is null)
+            priceOfUnit = type switch
+            {
+                RentType.Minutes => transport.MinutePrice,
+                RentType.Days => transport.DayPrice
+            };
+
+        if (priceOfUnit is null)
+            return Errors.Rent.ThePriceOfUnitForTransportIsNotIndicated;
+
+        return new Rent(renter, transport, type, timeStart, timeEnd, (double)priceOfUnit, finalPrice);
     }
 }

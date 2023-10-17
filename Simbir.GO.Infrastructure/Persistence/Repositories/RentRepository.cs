@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using Simbir.GO.Application.Common.Interfaces.Repositories;
+using Simbir.GO.Domain.Common.Errors;
+using Simbir.GO.Domain.RentEntity;
 using Simbir.GO.Domain.TransportEntity;
 
 namespace Simbir.GO.Infrastructure.Persistence.Repositories;
@@ -11,6 +14,16 @@ internal class RentRepository : IRentRepository
     public RentRepository(SimbirDbContext context)
     {
         _context = context;
+    }
+
+    public async Task<Error?> Add(Rent rent)
+    {
+        var exist = await _context.Rents.SingleOrDefaultAsync(x => x.TransportId == rent.TransportId);
+        if(exist is not null)
+            return Errors.Rent.ThisTransportHasAlreadyRented;
+
+        _context.Rents.Add(rent);
+        return null;
     }
 
     public Task<List<Transport>> GetTransportsByLatAndLong(double latitude, double longitude, double radius, TransportType? type)
