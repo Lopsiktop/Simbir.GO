@@ -16,8 +16,6 @@ public class Account : Entity
 
     public string PasswordHash { get; private set; }
 
-    public ICollection<Transport> Transports { get; private set; }
-
     private Account(string username, double balance, bool isAdmin, string passwordHash)
     {
         Username = username;

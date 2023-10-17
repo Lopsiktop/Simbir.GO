@@ -1,0 +1,87 @@
+﻿using ErrorOr;
+using Simbir.GO.Domain.AccountEntity;
+using Simbir.GO.Domain.Base;
+using Simbir.GO.Domain.Common.Errors;
+using Simbir.GO.Domain.TransportEntity;
+
+namespace Simbir.GO.Domain.RentEntity;
+
+public class Rent : Entity
+{
+    public Account Renter { get; private set; } = null!;
+    public int RenterId { get; private set; }
+
+    public Transport Transport { get; private set; } = null!;
+    public int TransportId { get; private set; }
+
+    public RentType RentType { get; private set; }
+
+    public DateTime TimeStart { get; private set; }
+
+    public DateTime? TimeEnd { get; private set; }
+
+    public double? PriceOfUnit { get; private set; }
+
+    public double? FinalPrice { get; private set; }
+
+    private Rent(Account renter, Transport transport, RentType rentType, DateTime timeStart, DateTime? timeEnd, double? priceOfUnit, double? finalPrice)
+    {
+        Renter = renter;
+        RenterId = renter.Id;
+        Transport = transport;
+        TransportId = transport.Id;
+        RentType = rentType;
+        TimeStart = timeStart;
+        TimeEnd = timeEnd;
+        PriceOfUnit = priceOfUnit;
+        FinalPrice = finalPrice;
+    }
+
+    private Rent() { }
+
+    public static ErrorOr<RentType> ToRentType(string type)
+    {
+        type = type.ToLower();
+        ErrorOr<RentType> typeResult = type switch
+        {
+            "minutes" => RentType.Minutes,
+            "days" => RentType.Days,
+            _ => Errors.Rent.RentTypeDoesNotExist
+        };
+
+        return typeResult;
+    }
+
+    public static List<Error> Validate(Account renter, Transport transport, DateTime timeStart, DateTime? timeEnd, double? priceOfUnit, double? finalPrice)
+    {
+        var errors = new List<Error>();
+
+        if (renter is null)
+            errors.Add(Errors.Account.AccountDoesNotExist);
+        if (transport is null)
+            errors.Add(Errors.Transport.TransportDoesNotExist);
+        if (timeStart > timeEnd)
+            errors.Add(Errors.Rent.TimeStartMustBeLessThenTimeEnd);
+        if(priceOfUnit.HasValue && priceOfUnit.Value < 0)
+            errors.Add(Errors.Rent.PriceOfUnitCannotBeLessThenZero);
+        if (finalPrice.HasValue && finalPrice.Value < 0)
+            errors.Add(Errors.Rent.FinalPriceCannotBeLessThenZero); ;
+
+        return errors;
+    }
+
+    public static ErrorOr<Rent> Create(Account renter, Transport transport, string rentType, DateTime timeStart, DateTime? timeEnd, double? priceOfUnit, double? finalPrice)
+    {
+        var validation = Validate(renter, transport, timeStart, timeEnd, priceOfUnit, finalPrice);
+        if (validation.Count != 0)
+            return validation;
+
+        var rentTypeResult = ToRentType(rentType);
+        if (rentTypeResult.IsError)
+            return rentTypeResult.Errors;
+
+        var type = rentTypeResult.Value;
+
+        return new Rent(renter, transport, type, timeStart, timeEnd, priceOfUnit, finalPrice);
+    }
+}

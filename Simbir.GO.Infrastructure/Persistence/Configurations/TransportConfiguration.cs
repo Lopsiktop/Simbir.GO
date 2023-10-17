@@ -13,7 +13,7 @@ public class TransportConfiguration : IEntityTypeConfiguration<Transport>
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.HasOne(x => x.Owner)
-            .WithMany(x => x.Transports)
+            .WithMany()
             .HasForeignKey(x => x.OwnerId)
             .IsRequired();
 
