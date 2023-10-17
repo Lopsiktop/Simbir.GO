@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="AdminTransports\Common\" />
+    <Folder Include="Rents\Commands\" />
+    <Folder Include="Rents\Common\" />
   </ItemGroup>
 
 </Project>

@@ -10,5 +10,7 @@ public interface IUnitOfWork
 
     ITransportRepository TransportRepository { get; }
 
+    IRentRepository RentRepository { get; }
+
     Task SaveChangesAsync();
 }
