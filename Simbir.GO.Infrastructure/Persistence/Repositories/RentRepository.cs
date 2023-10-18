@@ -36,6 +36,11 @@ internal class RentRepository : IRentRepository
         return await _context.Rents.Include(x => x.Transport).Include(x => x.Renter).SingleOrDefaultAsync(x => x.Id == id);
     }
 
+    public Task<List<Rent>> GetRentsByTransportId(int tranpsortId)
+    {
+        return _context.Rents.Where(x => x.TransportId == tranpsortId).ToListAsync();
+    }
+
     public Task<List<Rent>> GetRentsByUserId(int userId)
     {
         return _context.Rents.Where(x => x.RenterId == userId).ToListAsync();

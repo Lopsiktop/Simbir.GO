@@ -6,6 +6,7 @@ using Simbir.GO.Application.Rents.Commands.NewRent;
 using Simbir.GO.Application.Rents.Queries.GetHistory;
 using Simbir.GO.Application.Rents.Queries.GetRent;
 using Simbir.GO.Application.Rents.Queries.GetTransportByLatAndLong;
+using Simbir.GO.Application.Rents.Queries.GetTransportHistory;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
 using Simbir.GO.Contracts.TransportContracts;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -55,6 +56,19 @@ public class RentController : ApiContoller
         if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var command = new GetHistoryQuery(GetUserId());
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            history => Ok(history),
+            errors => Problem(errors));
+    }
+
+    [HttpGet("TransportHistory/{transportId}")]
+    public async Task<IActionResult> GetTransportHistory(int transportId)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = new GetTransportHistoryQuery(transportId, GetUserId());
         var result = await _mediator.Send(command);
 
         return result.Match(

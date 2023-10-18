@@ -24,8 +24,8 @@ public static partial class Errors
         public static Error TransportTypeDoesNotExist =>
             Error.Validation("Transport.TransportTypeDoesNotExist", "Такой тип транспорта несуществует!");
         
-        public static Error OnlyOwnerCanChangeHisTransport =>
-            Error.Conflict("Transport.OnlyOwnerCanChangeHisTransport", "Только владелец транспорта может его изменять!");
+        public static Error OnlyOwnerCanDealWithHisTransport =>
+            Error.Conflict("Transport.OnlyOwnerCanDealWithHisTransport", "Только владелец транспорта может с ним работать!");
 
         public static Error ThisTransportCannotBeRented =>
             Error.Conflict("Transport.ThisTransportCannotBeRented", "Этот транспорт не может быть арендован, так решил владелец!");
