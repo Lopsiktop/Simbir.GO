@@ -13,4 +13,6 @@ public interface IRentRepository
     Task<Rent?> FindById(int id);
 
     Task<Rent?> FindByIdInclude(int id);
+
+    Task<List<Rent>> GetRentsByUserId(int userId);
 }

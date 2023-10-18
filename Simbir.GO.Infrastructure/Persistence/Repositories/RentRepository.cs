@@ -36,6 +36,11 @@ internal class RentRepository : IRentRepository
         return await _context.Rents.Include(x => x.Transport).Include(x => x.Renter).SingleOrDefaultAsync(x => x.Id == id);
     }
 
+    public Task<List<Rent>> GetRentsByUserId(int userId)
+    {
+        return _context.Rents.Where(x => x.RenterId == userId).ToListAsync();
+    }
+
     public Task<List<Transport>> GetTransportsByLatAndLong(double latitude, double longitude, double radius, TransportType? type)
     {
         //x^2 + y^2 <= R^2
