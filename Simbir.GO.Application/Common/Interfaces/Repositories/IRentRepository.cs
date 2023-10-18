@@ -9,4 +9,8 @@ public interface IRentRepository
     Task<List<Transport>> GetTransportsByLatAndLong(double latitude, double longitude, double radius, TransportType? type);
 
     Task<Error?> Add(Rent rent);
+
+    Task<Rent?> FindById(int id);
+
+    Task<Rent?> FindByIdInclude(int id);
 }

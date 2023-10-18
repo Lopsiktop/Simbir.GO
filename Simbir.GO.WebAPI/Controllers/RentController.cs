@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.Rents.Commands.NewRent;
+using Simbir.GO.Application.Rents.Queries.GetRent;
 using Simbir.GO.Application.Rents.Queries.GetTransportByLatAndLong;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
 using Simbir.GO.Contracts.TransportContracts;
@@ -31,6 +32,19 @@ public class RentController : ApiContoller
 
         return result.Match(
             transports => Ok(transports),
+            errors => Problem(errors));
+    }
+
+    [HttpGet("{rentId}")]
+    public async Task<IActionResult> GetRentById(int rentId)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = new GetRentQuery(GetUserId(), rentId);
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            rent => Ok(rent),
             errors => Problem(errors));
     }
 

@@ -26,6 +26,16 @@ internal class RentRepository : IRentRepository
         return null;
     }
 
+    public async Task<Rent?> FindById(int id)
+    {
+        return await _context.Rents.FindAsync(id);
+    }
+
+    public async Task<Rent?> FindByIdInclude(int id)
+    {
+        return await _context.Rents.Include(x => x.Transport).Include(x => x.Renter).SingleOrDefaultAsync(x => x.Id == id);
+    }
+
     public Task<List<Transport>> GetTransportsByLatAndLong(double latitude, double longitude, double radius, TransportType? type)
     {
         //x^2 + y^2 <= R^2

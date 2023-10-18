@@ -7,7 +7,10 @@ public static partial class Errors
     public static class Rent
     {
         public static Error RentTypeDoesNotExist =>
-            Error.Validation("Rent.RentTypeDoesNotExist", "Такой тип аренды несуществует!");
+            Error.NotFound("Rent.RentTypeDoesNotExist", "Такой тип аренды несуществует!");
+
+        public static Error RentDoesNotExist =>
+            Error.NotFound("Rent.RentDoesNotExist", "Аренда с таким id несуществует!");
 
         public static Error TimeStartMustBeLessThenTimeEnd =>
             Error.Validation("Rent.TimeStartMustBeLessThenTimeEnd", "Время начала аренды должно быть меньше время его конца!");
@@ -26,5 +29,8 @@ public static partial class Errors
 
         public static Error ThePriceOfUnitForTransportIsNotIndicated =>
             Error.Conflict("Rent.ThePriceOfUnitForTransportIsNotIndicated", "Вы не можете арендовать транспорт, потому что владелец не указал цены. Попробуйте другой тип аренды!");
+
+        public static Error OnlyRenterOrTransportOwnerCanDealWithTheirRents =>
+            Error.Conflict("Rent.OnlyRenterOrTransportOwnerCanDealWithTheirRents", "Только арендатор или владелец транспорта могут взаимодействовать с их арендами!");
     }
 }
