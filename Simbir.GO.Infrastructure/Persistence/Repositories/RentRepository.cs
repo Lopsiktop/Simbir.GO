@@ -18,8 +18,9 @@ internal class RentRepository : IRentRepository
 
     public async Task<Error?> Add(Rent rent)
     {
-        var exist = await _context.Rents.SingleOrDefaultAsync(x => x.TransportId == rent.TransportId);
-        if(exist is not null)
+        var finishedAll = _context.Rents.Where(x => x.TransportId == rent.TransportId)
+            .All(x => x.TimeEnd.HasValue);
+        if(!finishedAll)
             return Errors.Rent.ThisTransportHasAlreadyRented;
 
         _context.Rents.Add(rent);

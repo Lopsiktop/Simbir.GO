@@ -71,7 +71,7 @@ public class Rent : Entity
         if (units is null)
             return null;
 
-        double amount = Math.Round(units.Value);
+        double amount = Math.Ceiling(units.Value);
         FinalPrice = PriceOfUnit * amount;
         return null;
     }
