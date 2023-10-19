@@ -32,5 +32,11 @@ public static partial class Errors
 
         public static Error OnlyRenterOrTransportOwnerCanDealWithTheirRents =>
             Error.Conflict("Rent.OnlyRenterOrTransportOwnerCanDealWithTheirRents", "Только арендатор или владелец транспорта могут взаимодействовать с их арендами!");
+
+        public static Error OnlyRenterCanEndHisRent =>
+            Error.Conflict("Rent.OnlyRenterCanEndHisRent", "Только арендатор может завершить аренду!");
+
+        public static Error ThisRentHasAlreadyFinished =>
+            Error.Conflict("Rent.ThisRentHasAlreadyFinished", "Эта аренда уже завершена!");
     }
 }

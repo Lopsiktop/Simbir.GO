@@ -28,7 +28,7 @@ internal class UpdateTransportCommandHandler : IRequestHandler<UpdateTransportCo
             request.CanBeRented,
             request.Model,
             request.Color,
-            request.Identifier,
+            request.Identifier, 
             request.Description,
             request.Latitude,
             request.Longitude,

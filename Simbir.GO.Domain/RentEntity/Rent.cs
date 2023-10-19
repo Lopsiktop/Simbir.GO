@@ -3,6 +3,7 @@ using Simbir.GO.Domain.AccountEntity;
 using Simbir.GO.Domain.Base;
 using Simbir.GO.Domain.Common.Errors;
 using Simbir.GO.Domain.TransportEntity;
+using System.Runtime.CompilerServices;
 
 namespace Simbir.GO.Domain.RentEntity;
 
@@ -50,6 +51,29 @@ public class Rent : Entity
         };
 
         return typeResult;
+    }
+
+    public Error? EndRent()
+    {
+        if (TimeEnd is not null)
+            return Errors.Rent.ThisRentHasAlreadyFinished;
+
+        TimeEnd = DateTime.UtcNow;
+        double? units = null;
+
+        var duration = TimeEnd - TimeStart;
+
+        if (RentType == RentType.Days)
+            units = duration.HasValue ? duration.Value.TotalDays : null;
+        else if (RentType == RentType.Minutes)
+            units = duration.HasValue ? duration.Value.TotalMinutes : null;
+
+        if (units is null)
+            return null;
+
+        double amount = Math.Round(units.Value);
+        FinalPrice = PriceOfUnit * amount;
+        return null;
     }
 
     public static List<Error> Validate(Account renter, Transport transport, DateTime timeStart, DateTime? timeEnd, double? priceOfUnit, double? finalPrice)
