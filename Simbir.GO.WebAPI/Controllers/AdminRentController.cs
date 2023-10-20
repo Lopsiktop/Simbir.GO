@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.Rents.Queries.GetHistory;
 using Simbir.GO.Application.Rents.Queries.GetRent;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
 using Simbir.GO.Domain.RentEntity;
@@ -25,6 +26,17 @@ public class AdminRentController : ApiContoller
         if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var query = new GetRentAdminQuery(GetUserId(), rentId);
+        var result = await _mediator.Send(query);
+
+        return result.Match(Ok, Problem);
+    }
+
+    [HttpGet("UserHistory/{userId}")]
+    public async Task<IActionResult> GetHistory(int userId)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var query = new GetHistoryQuery(userId);
         var result = await _mediator.Send(query);
 
         return result.Match(Ok, Problem);
