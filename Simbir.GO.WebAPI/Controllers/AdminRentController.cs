@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.Rents.Queries.GetHistory;
 using Simbir.GO.Application.Rents.Queries.GetRent;
+using Simbir.GO.Application.Rents.Queries.GetTransportHistory;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
 using Simbir.GO.Domain.RentEntity;
 using Simbir.GO.Infrastructure.Identity;
@@ -37,6 +38,17 @@ public class AdminRentController : ApiContoller
         if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var query = new GetHistoryQuery(userId);
+        var result = await _mediator.Send(query);
+
+        return result.Match(Ok, Problem);
+    }
+
+    [HttpGet("TransportHistory/{transportId}")]
+    public async Task<IActionResult> GetTransportHistory(int transportId)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var query = new GetTransportHistoryAdminQuery(transportId);
         var result = await _mediator.Send(query);
 
         return result.Match(Ok, Problem);
