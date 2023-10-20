@@ -38,5 +38,11 @@ public static partial class Errors
 
         public static Error ThisRentHasAlreadyFinished =>
             Error.Conflict("Rent.ThisRentHasAlreadyFinished", "Эта аренда уже завершена!");
+
+        public static Error TimeStartIsWrong =>
+            Error.Validation("Rent.TimeStartIsWrong", "Неверно указано время начала!");
+
+        public static Error TimeEndIsWrong =>
+            Error.Validation("Rent.TimeEndIsWrong", "Неверно указано время конца!");
     }
 }

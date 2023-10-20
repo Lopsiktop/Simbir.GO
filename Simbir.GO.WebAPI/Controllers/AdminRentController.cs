@@ -1,10 +1,13 @@
-﻿using MediatR;
+﻿using MapsterMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.AdminRent.Commands.NewRent;
 using Simbir.GO.Application.Rents.Queries.GetHistory;
 using Simbir.GO.Application.Rents.Queries.GetRent;
 using Simbir.GO.Application.Rents.Queries.GetTransportHistory;
 using Simbir.GO.Application.Transports.Commands.CreateTransport;
+using Simbir.GO.Contracts.RentContracts;
 using Simbir.GO.Domain.RentEntity;
 using Simbir.GO.Infrastructure.Identity;
 
@@ -15,10 +18,12 @@ namespace Simbir.GO.WebAPI.Controllers;
 public class AdminRentController : ApiContoller
 {
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public AdminRentController(IMediator mediator)
+    public AdminRentController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     [HttpGet("Rent/{rentId}")]
@@ -49,6 +54,17 @@ public class AdminRentController : ApiContoller
         if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
         var query = new GetTransportHistoryAdminQuery(transportId);
+        var result = await _mediator.Send(query);
+
+        return result.Match(Ok, Problem);
+    }
+
+    [HttpPost("Rent")]
+    public async Task<IActionResult> NewRent(RentAdminRequest request)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var query = _mapper.Map<NewRentAdminCommand>(request);
         var result = await _mediator.Send(query);
 
         return result.Match(Ok, Problem);
