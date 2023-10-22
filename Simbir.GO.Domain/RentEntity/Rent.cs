@@ -59,6 +59,10 @@ public class Rent : Entity
             return Errors.Rent.ThisRentHasAlreadyFinished;
 
         TimeEnd = DateTime.UtcNow;
+
+        if (FinalPrice is not null)
+            return null;
+
         double? units = null;
 
         var duration = TimeEnd - TimeStart;

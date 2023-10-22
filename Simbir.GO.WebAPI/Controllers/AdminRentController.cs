@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.GO.Application.AdminRent.Commands.NewRent;
+using Simbir.GO.Application.Rents.Commands.EndRent;
 using Simbir.GO.Application.Rents.Queries.GetHistory;
 using Simbir.GO.Application.Rents.Queries.GetRent;
 using Simbir.GO.Application.Rents.Queries.GetTransportHistory;
@@ -66,6 +67,17 @@ public class AdminRentController : ApiContoller
 
         var query = _mapper.Map<NewRentAdminCommand>(request);
         var result = await _mediator.Send(query);
+
+        return result.Match(Ok, Problem);
+    }
+
+    [HttpPost("Rent/End/{rentId}")]
+    public async Task<IActionResult> EndRent(int rentId, double latitude, double longitude)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = new EndRentAdminCommand(rentId, GetUserId(), latitude, longitude);
+        var result = await _mediator.Send(command);
 
         return result.Match(Ok, Problem);
     }
