@@ -81,4 +81,15 @@ public class AdminRentController : ApiContoller
 
         return result.Match(Ok, Problem);
     }
+
+    [HttpPut("Rent/{id}")]
+    public async Task<IActionResult> EndRent(int id, RentAdminRequest request)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = _mapper.Map<UpdateRentAdminCommand>((id, request));
+        var result = await _mediator.Send(command);
+
+        return result.Match(Ok, Problem);
+    }
 }

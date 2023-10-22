@@ -40,6 +40,31 @@ public class Rent : Entity
 
     private Rent() { }
 
+    public List<Error> Update(Transport transport, Account renter, DateTime timeStart, DateTime? timeEnd, double priceOfUnit, string priceType, double? finalPrice)
+    {
+        var validation = Validate(renter, transport, timeStart, timeEnd, priceOfUnit, finalPrice);
+        if (validation.Count != 0)
+            return validation;
+
+        var rentTypeResult = ToRentType(priceType);
+        if (rentTypeResult.IsError)
+            return rentTypeResult.Errors;
+
+        var type = rentTypeResult.Value;
+
+        Transport = transport;
+        TransportId = transport.Id;
+        Renter = renter;
+        RenterId = renter.Id;
+        TimeStart = timeStart;
+        TimeEnd = timeEnd;
+        PriceOfUnit = priceOfUnit;
+        RentType = type;
+        FinalPrice = finalPrice;
+
+        return validation;
+    }
+
     public static ErrorOr<RentType> ToRentType(string type)
     {
         type = type.ToLower();
