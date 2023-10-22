@@ -56,4 +56,9 @@ internal class RentRepository : IRentRepository
 
         return allTransports.Where(x => x.TransportType == type).ToListAsync();
     }
+
+    public void Remove(Rent rent)
+    {
+        _context.Rents.Remove(rent);
+    }
 }

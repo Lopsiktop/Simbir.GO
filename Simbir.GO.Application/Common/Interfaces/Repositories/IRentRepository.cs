@@ -17,4 +17,6 @@ public interface IRentRepository
     Task<List<Rent>> GetRentsByUserId(int userId);
 
     Task<List<Rent>> GetRentsByTransportId(int tranpsortId);
+
+    void Remove(Rent rent);
 }

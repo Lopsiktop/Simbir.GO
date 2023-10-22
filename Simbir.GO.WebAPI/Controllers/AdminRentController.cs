@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.GO.Application.AdminRent.Commands.DeleteRent;
 using Simbir.GO.Application.AdminRent.Commands.NewRent;
 using Simbir.GO.Application.Rents.Commands.EndRent;
 using Simbir.GO.Application.Rents.Queries.GetHistory;
@@ -83,7 +84,7 @@ public class AdminRentController : ApiContoller
     }
 
     [HttpPut("Rent/{id}")]
-    public async Task<IActionResult> EndRent(int id, RentAdminRequest request)
+    public async Task<IActionResult> UpdateRent(int id, RentAdminRequest request)
     {
         if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
 
@@ -91,5 +92,19 @@ public class AdminRentController : ApiContoller
         var result = await _mediator.Send(command);
 
         return result.Match(Ok, Problem);
+    }
+
+    [HttpDelete("Rent/{rentId}")]
+    public async Task<IActionResult> DeleteRent(int rentId)
+    {
+        if (await TokenIsRevokedOrAccountDoesNotExist()) return Unauthorized();
+
+        var command = new DeleteRentAdminCommand(rentId, GetUserId());
+        var result = await _mediator.Send(command);
+
+        if (result.HasValue)
+            return Problem(result.Value);
+
+        return NoContent();
     }
 }
