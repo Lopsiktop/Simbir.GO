@@ -86,7 +86,10 @@ public class Rent : Entity
         TimeEnd = DateTime.UtcNow;
 
         if (FinalPrice is not null)
+        {
+            Renter.SpendMoney((double)FinalPrice);
             return null;
+        }
 
         double? units = null;
 
@@ -102,6 +105,9 @@ public class Rent : Entity
 
         double amount = Math.Ceiling(units.Value);
         FinalPrice = PriceOfUnit * amount;
+
+        Renter.SpendMoney((double)FinalPrice);
+
         return null;
     }
 
