@@ -16,8 +16,6 @@ public class Account : Entity
 
     public string PasswordHash { get; private set; }
 
-    public ICollection<Transport> Transports { get; private set; }
-
     private Account(string username, double balance, bool isAdmin, string passwordHash)
     {
         Username = username;
@@ -34,6 +32,16 @@ public class Account : Entity
     {
         bool answer = Crypt.EnhancedVerify(password, PasswordHash);
         return answer;
+    }
+
+    public void AddMoney()
+    {
+        Balance += 250000;
+    }
+
+    public void SpendMoney(double price)
+    {
+        Balance -= price;
     }
 
     public List<Error> Update(string username, string password)

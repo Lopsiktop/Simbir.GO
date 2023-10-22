@@ -22,13 +22,13 @@ internal class UpdateTransportCommandHandler : IRequestHandler<UpdateTransportCo
             return Errors.Transport.TransportDoesNotExist;
 
         if (transport.OwnerId != request.UserId)
-            return Errors.Transport.OnlyOwnerCanChangeHisTransport;
+            return Errors.Transport.OnlyOwnerCanDealWithHisTransport;
 
         var result = transport.Update(
             request.CanBeRented,
             request.Model,
             request.Color,
-            request.Identifier,
+            request.Identifier, 
             request.Description,
             request.Latitude,
             request.Longitude,

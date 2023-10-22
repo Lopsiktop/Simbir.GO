@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Simbir.GO.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Simbir.GO.Infrastructure.Persistence;
 namespace Simbir.GO.Infrastructure.Migrations
 {
     [DbContext(typeof(SimbirDbContext))]
-    partial class SimbirDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231017073108_InitialRent")]
+    partial class InitialRent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

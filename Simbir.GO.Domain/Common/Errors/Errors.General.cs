@@ -14,5 +14,8 @@ public static partial class Errors
 
         public static Error IdCannotBeNegative =>
             Error.Validation("General.IdCannotBeNegative", "Поле 'id' не может быть отрицательным!");
+
+        public static Error OnlyForAdmin =>
+            Error.Validation("General.OnlyForAdmin", "Только для админов!");
     }
 }

@@ -77,6 +77,12 @@ public class Transport : Entity
         return errors;
     }
 
+    public void UpdateLocation(double latitude, double longitude)
+    {
+        Latitude = latitude;
+        Longitude = longitude;
+    }
+
     public List<Error> Update(Account owner, bool canBeRented, string transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
     {
         var result = Update(canBeRented, model, color, identifier, description, latitude, longitude, minutePrice, dayPrice);

@@ -15,6 +15,7 @@ internal class UnitOfWork : IUnitOfWork
         AccountRepository = new AccountRepository(context);
         RevokedTokenRepository = new RevokedTokenRepository(context);
         TransportRepository = new TransportRepository(context);
+        RentRepository = new RentRepository(context);
     }
 
     public IAccountRepository AccountRepository { get; }
@@ -22,6 +23,8 @@ internal class UnitOfWork : IUnitOfWork
     public IRevokedTokenRepository RevokedTokenRepository { get; }
 
     public ITransportRepository TransportRepository { get; }
+
+    public IRentRepository RentRepository { get; }
 
     public async Task SaveChangesAsync()
     {

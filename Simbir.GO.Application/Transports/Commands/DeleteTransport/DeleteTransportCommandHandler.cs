@@ -21,7 +21,7 @@ internal class DeleteTransportCommandHandler : IRequestHandler<DeleteTransportCo
             return Errors.Transport.TransportDoesNotExist;
 
         if (transport.OwnerId != request.UserId)
-            return Errors.Transport.OnlyOwnerCanChangeHisTransport;
+            return Errors.Transport.OnlyOwnerCanDealWithHisTransport;
 
         _unitOfWork.TransportRepository.Remove(transport);
         await _unitOfWork.SaveChangesAsync();
