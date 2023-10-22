@@ -34,6 +34,11 @@ public class Account : Entity
         return answer;
     }
 
+    public void AddMoney()
+    {
+        Balance += 250000;
+    }
+
     public List<Error> Update(string username, string password)
     {
         var errors = ValidateAccount(username, password);
