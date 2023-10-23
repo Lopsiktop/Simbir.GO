@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Simbir.GO.Application;
 using Simbir.GO.Application.Common.Interfaces.Authentication;
 using Simbir.GO.Infrastructure;
+using Simbir.GO.Infrastructure.Persistence;
 using Simbir.GO.WebAPI;
 using Simbir.GO.WebAPI.Common.Errors;
 using Simbir.GO.WebAPI.Common.Mappings;
@@ -22,6 +25,14 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        using (var context = scope.ServiceProvider.GetService<SimbirDbContext>())
+        {
+            context.Database.Migrate();
+        }
+    }
+
     using (var scope = app.Services.CreateScope())
     {
         var remove = scope.ServiceProvider.GetRequiredService<IRemoveExpiredTokens>();

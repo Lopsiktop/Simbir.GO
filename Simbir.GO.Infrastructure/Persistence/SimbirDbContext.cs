@@ -5,7 +5,7 @@ using Simbir.GO.Domain.TransportEntity;
 
 namespace Simbir.GO.Infrastructure.Persistence;
 
-internal class SimbirDbContext : DbContext
+public class SimbirDbContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; } 
 
